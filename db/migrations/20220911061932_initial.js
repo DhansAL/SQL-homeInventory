@@ -1,4 +1,12 @@
 import { TABLENAMES } from "../../src/constants/tableNames";
+/**
+ * @param { import("knex").Knex.TableBuilder } table
+ * @returns { Promise<void> } 
+ */
+function addDefaultColumns(table) {
+    table.timestamps(false, true);
+    table.datetime("deleted_at");
+}
 
 /**
  * @param { import("knex").Knex } knex
@@ -12,6 +20,7 @@ export async function up(knex) {
         // table.text('password').notNullable() //text gonna take more memory
         table.string('password', 127).notNullable()
         table.datetime('last_login')
+        addDefaultColumns(table)
     })
 }
 /**
