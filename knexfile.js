@@ -6,12 +6,17 @@
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-export const development = {
-  client: 'pg ',
+const development = {
+  client: 'pg',
   connection: {
     database: process.env.DATABASE,
     user: process.env.PG_USER,
     password: process.env.PG_PASSWORD,
     filename: './dev.postgresData'
+  },
+  migrations: {
+    directory: './db/migrations'
   }
 };
+
+export { development }
