@@ -14,8 +14,15 @@ exports.up = async function (knex) {
     })
     // put country relation in state table  
     await knex.schema.table(TABLENAMES.state, (table) => {
+        table.string("code")
         references(table, TABLENAMES.country)
     })
+
+    // add country code and seperate it from country name. same for states.
+    await knex.schema.table(TABLENAMES.country, (table) => {
+        table.string("code")
+    })
+
     await knex.schema.createTable(TABLENAMES.size, (table) => {
         table.increments().notNullable();
         table.string("name").notNullable()
@@ -32,6 +39,14 @@ exports.up = async function (knex) {
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
  */
-exports.down = function (knex) {
-
+exports.down = async function (knex) {
+    // drop countryid from address
+    await knex.schema.table(TABLENAMES.address, (table) => {
+        references(table, TABLENAMES.country)
+    })
+    // put country relation in state table  
+    await knex.schema.table(TABLENAMES.state, (table) => {
+        table.dropColumn("country_id")
+    })
+    await knex.schema.dropTable(TABLENAMES.size)
 };
