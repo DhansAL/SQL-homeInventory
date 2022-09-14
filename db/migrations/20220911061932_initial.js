@@ -1,61 +1,5 @@
-import { MAX_EMAIL_LENGTH, MAX_PASSWORD_LENGTH, MAX_URL_LENGTH, TABLENAMES } from "../../src/constants/tableNames";
-
-/**
- * @param { import("knex").Knex.TableBuilder } table
- * @returns { Promise<void> } 
- */
-function addDefaultColumns(table) {
-    table.timestamps(false, true);
-    table.datetime("deleted_at");
-}
-/**
- * Creates a basic name only table with no other columns
- * @param { import("knex").Knex } Knex
- * @param { string } tableName name of the table
- * @returns { Promise<void> } 
- */
-
-function createNameOnlyTable(Knex, tableName) {
-    try {
-        // console.log(tableName);
-        return Knex.schema.createTable(tableName, (table) => {
-            table.increments().notNullable();
-            table.string("name").notNullable().unique()
-            addDefaultColumns(table)
-        });
-    } catch (error) {
-        console.log("error creating name only tables,", error.message);
-    }
-}
-
-/**
- * Creates a reference to foreign tables
- * @param { import("knex").Knex.TableBuilder } table
- * @param { string } column name of the table
- * @param { string } foreignTable name of the foreign table
- * @returns { Promise<void> } 
- */
-function references(table, tableName) {
-    table.integer(`${tableName}_id`).unsigned().references("id").inTable(tableName).onDelete("cascade")
-}
-
-/**
- * inserts url in a given table
- * @param { import("knex").Knex.TableBuilder } table
- * @param { string } column  desired name of column for url in the table given
- * @param { string } foreignTable name of the foreign table
- * @returns { Promise<void> } 
- */
-function url(table, column) {
-    table.string(column, MAX_URL_LENGTH)
-}
-
-
-
-
-
-
-// ------------------------------------------------------------------------------------------------
+import { MAX_EMAIL_LENGTH, MAX_PASSWORD_LENGTH, TABLENAMES } from "../../src/constants/tableNames";
+import { addDefaultColumns, createNameOnlyTable, references, url } from "../../src/utils/tableUtils";
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> } 
@@ -129,8 +73,8 @@ export async function down(knex) {
         TABLENAMES.location,
     ].map(tableName => {
         try {
-            return knex.schema.dropTable(tableName) //remember to return 
-            // return knex.raw(`DROP TABLE IF EXISTS "${tableName}" CASCADE`)
+            // knex.schema.dropTable(tableName)  //this does not work on foreign keys for some reason
+            return knex.raw(`DROP TABLE IF EXISTS "${tableName}" CASCADE`)//remember to return 
         } catch (error) {
             console.error("knex:error while rolling back migration, ", error.message)
         }

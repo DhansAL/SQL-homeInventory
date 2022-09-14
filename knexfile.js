@@ -16,6 +16,9 @@ const development = {
   },
   migrations: {
     directory: './db/migrations'
+  },
+  seeds: {
+    directory: './db/seeds'
   }
 };
 
