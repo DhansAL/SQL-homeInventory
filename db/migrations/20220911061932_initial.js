@@ -41,7 +41,7 @@ export async function up(knex) {
         table.float("latitude").notNullable()
         table.float("longitude").notNullable()
         // table.integer("state_id").unsigned().references('id').inTable("state")
-        references(table, "state")
+        references(table, "state", false)
         references(table, "country")
         addDefaultColumns(table)
     })

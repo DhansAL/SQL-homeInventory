@@ -8,11 +8,9 @@ import { addDefaultColumns, createNameOnlyTable, references, url } from "../../s
  * @returns { Promise<void> }
  */
 exports.up = async function (knex) {
-    // drop countryid from address
-    await knex.schema.table(TABLENAMES.address, (table) => {
-        table.dropColumn("country_id")
-    })
+
     // put country relation in state table  
+    // note difference between createtable and table. table - do stuff to existing table.
     await knex.schema.table(TABLENAMES.state, (table) => {
         table.string("code")
         references(table, TABLENAMES.country)
@@ -40,10 +38,6 @@ exports.up = async function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = async function (knex) {
-    // drop countryid from address
-    await knex.schema.table(TABLENAMES.address, (table) => {
-        references(table, TABLENAMES.country)
-    })
     // put country relation in state table  
     await knex.schema.table(TABLENAMES.state, (table) => {
         table.dropColumn("country_id")
