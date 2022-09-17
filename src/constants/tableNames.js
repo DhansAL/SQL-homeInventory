@@ -7,7 +7,8 @@ export const TABLENAMES = {
     location: "location",
     address: "address",
     manufacturer: "manufacturer",
-    size: "size"
+    size: "size",
+    item: "item"
 }
 export const MAX_URL_LENGTH = 2000
 export const MAX_EMAIL_LENGTH = 254

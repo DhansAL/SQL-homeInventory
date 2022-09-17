@@ -31,6 +31,21 @@ exports.up = async function (knex) {
         references(table, TABLENAMES.shape)
         addDefaultColumns(table)
     })
+    // ITEM TABLE.
+    await knex.schema.createTable(TABLENAMES.item, (table) => {
+        table.increments().notNullable();
+        table.string("name", 1000).notNullable()
+        table.text("description")
+        table.string("sku", 42).notNullable() // the barcode
+
+        references(table, TABLENAMES.user)
+        references(table, TABLENAMES.item_type)
+        references(table, TABLENAMES.manufacturer)
+        references(table, TABLENAMES.size)
+        addDefaultColumns(table)
+    })
+
+    
 };
 
 /**

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "knex:migrate-initial": "knex migrate:make initial --esm",
     "knex:migrate": "knex migrate:latest --esm",
-    "knex:migrate-rollback": "knex migrate:rollback --esm",
+    "knex:rollback": "knex migrate:rollback --esm",
     "knex:seed-make-initial": "knex seed:make initial --esm",
     "knex:seed": "knex seed:run --esm"
   },
