@@ -16,7 +16,7 @@ export async function up(knex) {
             table.datetime('last_login')
             addDefaultColumns(table)
         }),
-        knex.schema.createTable(TABLENAMES.location, (table) => {
+        knex.schema.createTable(TABLENAMES.inventory_location, (table) => {
             table.increments().notNullable()
             table.string("name").notNullable().unique()
             table.string("description", 1000);
@@ -45,7 +45,7 @@ export async function up(knex) {
         references(table, "country")
         addDefaultColumns(table)
     })
-    await knex.schema.createTable(TABLENAMES.manufacturer, (table) => {
+    await knex.schema.createTable(TABLENAMES.company, (table) => {
         table.increments().notNullable();
         table.string("name").notNullable()
         url(table, "logo_url")
@@ -69,8 +69,8 @@ export async function down(knex) {
         TABLENAMES.shape,
         TABLENAMES.country,
         TABLENAMES.state,
-        TABLENAMES.manufacturer,
-        TABLENAMES.location,
+        TABLENAMES.company,
+        TABLENAMES.inventory_location,
     ].map(tableName => {
         try {
             // knex.schema.dropTable(tableName)  //this does not work on foreign keys for some reason

@@ -30,12 +30,18 @@ export function createNameOnlyTable(Knex, tableName) {
 /**
  * Creates a reference to foreign tables
  * @param { import("knex").Knex.TableBuilder } table
- * @param { string } tableName name of the table
+ * @param { string } tableName name of the table to which relation is made
  * @param { boolean } notNullable if false, it creates a nullable foreign key   
+ * @param { string } columnName creates a custom column name instead of "table_id", if not provided, defaults to table_id   
  * @returns { Promise<void> } 
  */
-export function references(table, tableName, notNullable = true) {
-    const definition = table.integer(`${tableName}_id`).unsigned().references("id").inTable(tableName).onDelete("cascade")
+export function references(table, tableName, notNullable = true, columnName = undefined) {
+    const definition = table.integer(`
+        ${columnName ? columnName : tableName}_id
+            `).unsigned()
+        .references("id")
+        .inTable(tableName)
+        .onDelete("cascade")
 
     if (notNullable) {
         definition.notNullable()
