@@ -105,6 +105,12 @@ exports.down = async function (knex) {
     // put country relation in state table 
     await knex.schema.table(TABLENAMES.state, (table) => {
         table.dropColumn("country_id")
+        table.dropColumn("code")
+
+    })
+
+    await knex.schema.table(TABLENAMES.country, (table) => {
+        table.dropColumn("code")
     })
 
 };
